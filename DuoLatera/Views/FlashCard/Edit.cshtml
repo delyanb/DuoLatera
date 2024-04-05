@@ -1,0 +1,96 @@
+﻿@using DuoLatera.Models.ViewModels
+@model FlashCardVM
+<style>
+    /* Custom CSS to set the height of the input fields equal to their width */
+    .form-floating {
+        position: relative;
+    }
+
+        .form-floating input[type="text"] {
+            width: 100%;
+            padding-top: calc(100% / 2); /* Set the height based on 1:1 aspect ratio */
+            padding-bottom: calc(100% / 2);
+            box-sizing: border-box;
+            font-size: inherit;
+        }
+
+        .form-floating label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            line-height: inherit;
+            pointer-events: none;
+            border: none;
+            transform: none;
+        }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Adjust the column size as per your requirement -->
+            <div class="card shadow border-0 mt-4">
+                <div class="card-header bg-primary bg-gradient ml-0 py-3">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2 class="text-white py-2">Edit FlashCard</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" class="row" enctype="multipart/form-data">
+                        <input asp-for="@Model.FlashCard.Id" hidden />
+                        <input asp-for="@Model.FlashCard.CardSetId" hidden />
+                        <input asp-for="@Model.FlashCard.CreateDate" hidden />
+                        <input asp-for="@Model.FlashCard.UserId" hidden />
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="border p-3">
+                                    <div class="row">
+                                        <div class="col-6" style="flex: 0 0 50%;">
+                                            <div class="form-floating py-2">
+                                                <input asp-for="@Model.FlashCard.Text1" type="text" class="form-control border-0 shadow" style="height: 150px; display: block;" />
+                                                <span asp-validation-for="@Model.FlashCard.Text1" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-floating py-2">
+                                                <input asp-for="@Model.FlashCard.Text2" type="text" class="form-control border-0 shadow" style="height: 150px; display: block;" />
+                                                <span asp-validation-for="@Model.FlashCard.Text2" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary form-control">
+                                                Update
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <a asp-controller="FlashCard" asp-action="Index" asp-route-setId="@Model.setId" class="btn btn-outline-primary form-control">
+                                                Back To Set
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+
+    }
+}
+

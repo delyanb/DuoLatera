@@ -1,0 +1,51 @@
+﻿@model int
+
+<div class="options-space">
+    <h2 class="text-center">Simple Practice</h2>
+    <div class="option">
+        <div class="method-showoff" id="method-one">
+            <div class="card-for-animation animation-card">
+                
+            </div>
+        </div>
+        <div class="button-place">
+            <a class="btn btn-primary btn-option" asp-controller="Study" asp-action="Turning" asp-route-setId="@Model">Select</a>
+        </div>
+        
+    </div>
+    <h2 class="text-center">Test Practice</h2>
+    <div class="option">
+        <div class="method-showoff" id="method-two">
+            <div class="card-for-animation-2 animation-card">
+                    <div class="card-front1"></div>
+                    <div class="card-back1"><h2>Uhh!!</h2></div>
+            </div>
+            <div class="answers">
+                <div class="question-container">
+                    What's on the back
+                </div>
+                <div class="answer-container">
+                    <div class="grid-container">
+                        <div class="grid-item btn btn-outline-success">Uhh!!</div>
+                        <div class="grid-item btn btn-outline-secondary">What?</div>
+                        <div class="grid-item btn btn-outline-secondary">Hello?</div>
+                        <div class="grid-item btn btn-outline-secondary">Bye!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-place">
+            <a class="btn btn-primary btn-option" asp-controller="Study" asp-action="Turning" asp-route-setId="@Model">Select</a>
+        </div>
+        
+    </div>
+    
+</div>
+
+@section Scripts{
+    <script>
+        
+        
+    </script>
+}
+

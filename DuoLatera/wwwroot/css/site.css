@@ -1,0 +1,244 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+
+.card-body-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    background-color: lightgrey; border-radius: 10px;
+    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1);
+    word-wrap:break-word !important;
+    overflow-wrap:break-word;
+    max-width:100%;
+    
+}
+.card-display{
+    max-width:50%;
+    
+}
+
+.text-between-links {
+    font-size:1.5rem;
+    font-weight: 900;
+    color: #008cba;
+}
+
+.card-text {
+    max-width:100%;
+    font-size:3rem;
+    
+}
+.view-other-side{
+    font-size:1.5rem;
+}
+.options-space{
+    height:85vh;
+    margin-top:2.6rem;
+    display:flex;
+    flex-direction:column;
+}
+.option{
+    width:100%;
+    height:40%;
+    margin-top:0.5rem;
+    margin-bottom:3rem;
+}
+.method-showoff{
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    height:100%;
+    position:relative;
+    perspective:1000px;
+}
+.button-place{
+    height:10%;
+                  }
+.card-for-animation {
+    
+    position: relative;
+    background-color: grey;
+    transform-style: preserve-3d;
+    transition: transform 0.5s, left 4s;
+    animation: cardAnimation 4s linear infinite;
+    transition: background-color 0.5s ease;
+    border-radius:10px;
+    
+}
+.button-place{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.method-button{
+    font-size:0.5rem;
+    width:200px;
+}
+#method-two{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:1rem;
+}
+.card-for-animation-2 {
+    
+    position: relative;
+    background-color: grey;
+    border-radius: 10px;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    animation: turn 4s linear infinite;
+    transition: transform 0.5s;
+}
+
+.card-front1,
+.card-back1 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+}
+.card-back1 {
+            transform: rotateY(180deg);
+        }
+        
+        
+
+        .card-front1 h2,
+        .card-back1 h2 {
+            max-width: 90%;
+            text-align: center; /* Set a maximum width for the text */
+        }
+        
+
+.answers{
+    width:20%;
+    height:90%;
+    display:flex;
+    flex-direction:column;
+    margin-left:2rem;
+}
+.question-container{
+    height:50%;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.answer-container {
+    height: 50%;
+    width: 100%;
+    margin-bottom:2rem;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto; 
+    gap: 10px; 
+    padding:5px;
+}
+.grid-item {
+    width: 100%; 
+    height: 100%; 
+
+    align-self:center;
+}
+.animation-card {
+    width: 200px;
+    height: 90%;
+}
+.btn-option{
+    width:50%;
+    margin-bottom:1rem;
+}
+.turning-container-full{
+    display:flex;
+    justify-content:center;
+}
+.turning-containter{
+    display:flex;
+    flex-direction:column;
+    height:85vh;
+    width:60%;
+}
+.turning-buttons{
+    height:10%;
+}
+.turning-card{
+    height:80%;
+}
+.bottom-buttons{
+    height:10%;
+}
+
+@keyframes turn{
+    0%{
+        transform:rotateY(0deg);
+    }
+    25%{
+        transform:rotateY(180deg);
+    }
+    50% {
+        transform: rotateY(180deg);
+    }
+    75%{
+        transform:rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}
+@keyframes cardAnimation {
+    0% {
+        transform: rotateY(0deg) translateX(0%) ;
+        background-color: grey;
+    }
+    25% {
+        transform: rotateY(180deg) translateX(0%);
+        background-color: grey;
+    }
+    45% {
+        transform: rotateY(180deg) translateX(0%);
+        background-color: grey;
+    }
+    50% {
+        transform: rotateY(180deg) translateX(100%) ;
+        background-color: white;
+    }
+    51% {
+        transform: rotateY(0deg) translateX(100%);
+        background-color: white;
+    }
+    56% {
+        transform: rotateY(0deg) translateX(0%) ;
+        background-color: grey;
+    }
+    100% {
+        transform: rotateY(0deg) translateX(0%) ;
+        background-color: grey;
+    }
+   
+}

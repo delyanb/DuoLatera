@@ -1,0 +1,48 @@
+﻿@using DuoLatera.Models.ViewModels
+@model CardSetVM
+
+<div class="row justify-content-between ">
+    <div class="col-auto">
+        <a class="btn btn-primary bg-gradient text-center" asp-controller="CardSet" asp-action="UpSert" asp-route-folderId="@Model.FolderId"> Create New CardSet </a>
+    </div>
+    <div class="col-auto">
+        <a class="btn btn-secondary bg-gradient text-center" asp-controller="Folder" asp-action="Index"> Back To Folders </a>
+    </div>
+</div>
+<div class="container-fluid ">
+    <div class="row justify-content-center pb-3">
+        @foreach(var set in Model.cardSets)
+        {      
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                            <a asp-controller="CardSet" asp-action="Delete" asp-route-id="@set.Id"
+                               class=" btn btn-sm btn-light position-absolute top-0 start-0 mt-2 ms-2 rounded-circle"
+                               style="color:#fff; ">
+                                <i class="bi bi-trash" style="color:#2596be"></i>
+                            </a>
+                            <a asp-controller="CardSet" asp-action="UpSert" asp-route-id="@set.Id" asp-route-folderId="@set.FolderId"
+                               class="btn btn-sm btn-primary position-absolute top-0 end-0 mt-2 me-2 rounded-circle"
+                               style="color:#2596be;">
+                                <i class="bi bi-pencil-square" style="color:white"></i>
+                            </a>
+                        <i class="bi bi-grid-3x3-gap text-center" style="font-size: 6rem; color:#2596be;"></i>
+                        <div class="card-body pb-0">
+                            <div class="pl-1">
+                                <p class="card-title  h5 text-dark text-uppercase text-center">@set.Name</p>
+                            </div>
+                            <div class="pl-1">
+                                <p class="text-dark text-opacity-75 text-center">@set.Subject</p>
+                            </div>
+                        </div>
+                        <div>
+                            <a asp-controller="FlashCard" asp-action="Index" asp-route-setId="@set.Id" class=" btn btn-primary bg-gradient border-0 form-control">Select</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

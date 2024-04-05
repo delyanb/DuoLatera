@@ -1,0 +1,165 @@
+﻿<div class="row justify-content-center align-items-center mt-4 mb-2">
+    <div class= "col-8 col-md-6 justify-content-center align-items-center"style=" position:relative; height:7vh;">
+        <button class="refresh-button btn btn-sm btn-light position-absolute start-0 ms-2 rounded-circle" style="color:#fff;">
+            <i class="bi bi-arrow-clockwise" style="color:#2596be; font-size:2rem;"></i>
+        </button>
+        <button class="shuffle-button btn btn-sm btn-light position-absolute end-0 ms-2 rounded-circle" style="color:#fff;">
+            <i class="bi bi-shuffle" style="color:#2596be; font-size:2rem;"></i>
+        </button>
+    </div>
+</div>
+<div class="row justify-content-center" style="height:73vh;">
+    <div class="col-2 col-md-2 justify-content-center align-items-center row">
+        <button class="btn-secondary btn previous-button" style="height:75px;width:75px;">
+            <i class="bi bi-caret-left-square-fill" style="color:#2596be; font-size:2rem;">
+                
+            </i>
+        </button>
+    </div>
+    <div class=" col-8 col-md-6" style="height:100%">
+        <div class="card border-0 p-3 shadow border-top border-5 rounded" style="height:100%">
+            
+            <div class="text-between-links text-center">
+                <p class="front-text">
+
+                    Front
+                </p>
+                <p class="back-text" style="display:none;">
+
+                    Back
+                </p>
+            </div>
+            <div class="card-body card-body-display position-relative mb-2">
+                <div class="pl-1 card-text">
+
+                    <p class=" card-front card-title  h1 text-dark  text-center fw-bolder" style="display:block"></p>
+                    <p class=" card-back card-title  h1 text-dark  text-center fw-bolder" style="display:none"></p>
+                </div>
+
+
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary view-other-side"> Turn </button>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-2 col-md-2 justify-content-center align-items-center row">
+        <button class="btn-secondary btn next-button" style="height:75px;width:75px;">
+            <i class="bi bi-caret-right-square-fill" style="color:#2596be; font-size:2rem;">
+
+            </i>
+        </button>
+    </div>
+</div>
+<div class="word-count mt-4 h2 text-center">
+    Word 0/0
+</div>
+
+@section Scripts{
+    <script>
+
+        let cardsData = @Html.Raw(ViewBag.FlashCards);
+        const originalCardsData = Array.from(cardsData);
+        const turnButton = document.querySelector('.view-other-side');
+        const CardCount = document.querySelector('.word-count');
+        const cardFront = document.querySelector('.card-front');
+        const cardBack = document.querySelector('.card-back');
+        const nextButton = document.querySelector('.next-button');
+        const previousButton = document.querySelector('.previous-button');
+        const frontText = document.querySelector('.front-text');
+        const backText = document.querySelector('.back-text');
+        const shuffleButton = document.querySelector('.shuffle-button');
+        const refreshButton = document.querySelector('.refresh-button');
+        let shuffledArray = new Array(cardsData.length);
+        let count = 0;
+        let cardCount = cardsData.length;
+        CardCount.textContent ='Card '+ (count+1)+'/'+ cardCount;
+        cardFront.textContent = cardsData[count].Text1;
+        cardBack.textContent = cardsData[count].Text2;
+        checkCount();
+        turnButton.addEventListener('click', function () {
+            if (cardFront.style.display !== 'none') {
+                swapCards('back');
+
+
+            }
+            else if (cardBack.style.display !== 'none') {
+                swapCards('front');
+            }
+        });
+        previousButton.addEventListener('click', function () {
+            if (count !== 0) {
+                count--;
+                swapCards('front');
+            }
+            checkCount();
+        });
+        nextButton.addEventListener('click', function () {
+            if (count !== cardsData.length - 1) {
+                count++;
+                swapCards('front');
+            }
+            checkCount();
+        });
+        refreshButton.addEventListener('click', function () {
+            cardsData = Array.from(originalCardsData);
+            count = 0;
+            swapCards('front');
+            toastr.options.positionClass = 'toast-top-center';
+            toastr.success('Successfully Refreshed Cards');
+            checkCount();
+        });
+        shuffleButton.addEventListener('click', function () {
+            count = 0;
+            cardsData = shuffleArray(cardsData);
+            swapCards('front');
+            toastr.options.positionClass = 'toast-top-center';
+            toastr.success('Successfully Shuffled Cards');
+            checkCount();
+
+        });
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+        function swapCards(card) {
+            CardCount.textContent = 'Card ' + (count + 1) + '/' + cardCount;
+            cardFront.textContent = cardsData[count].Text1;
+            cardBack.textContent = cardsData[count].Text2;
+            if (card === 'front') {
+                cardFront.style.display = 'block';
+                cardBack.style.display = 'none';
+                frontText.style.display = 'block';
+                backText.style.display = 'none';
+            }
+            else
+            {
+
+                cardFront.style.display = 'none';
+                cardBack.style.display = 'block';
+                frontText.style.display = 'none';
+                backText.style.display = 'block';
+            }
+        }
+        function checkCount()
+        {
+            if (count === cardsData.length - 1) {
+                nextButton.style.display = 'none'
+            }
+            else {
+                nextButton.style.display = 'block'
+            }
+            if (count === 0) {
+                previousButton.style.display = 'none'
+            }
+            else {
+                previousButton.style.display = 'block'
+            }
+        }
+        
+
+        
+
+
+    </script>
+}

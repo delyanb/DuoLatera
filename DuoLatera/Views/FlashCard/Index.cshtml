@@ -1,0 +1,97 @@
+﻿@using DuoLatera.Models.ViewModels
+@model FlashCardsVM
+<div class="row justify-content-between ">
+    <div class="col-auto">
+        <a class="btn btn-primary bg-gradient text-center" asp-controller="FlashCard" asp-action="Create" asp-route-setId="@Model.CardSet.Id"> Add FlashCard</a>
+    </div>
+    <div class="col-auto ">
+        <a class="btn btn-success bg-gradient text-center" asp-controller="FlashCard" asp-action="SelectStudyMethod" asp-route-setId="@Model.CardSet.Id"> Study Set </a>
+    </div>
+    <div class="col-auto">
+        <a class="btn btn-secondary bg-gradient text-center" asp-controller="CardSet" asp-action="Index" asp-route-id ="@Model.CardSet.FolderId"> Back To Sets </a>
+    </div>
+</div>
+<div class="container-fluid pt-4">
+    <div class="row justify-content-center pb-3 cardrow">
+         @foreach (var card in Model.FlashCards)
+        {
+            <div class="col-lg-3 col-sm-6 card-display">
+                <div class="row p-2">
+                    <div class="col-12 p-1">
+                        <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                             <a asp-controller="FlashCard" asp-action="Delete" asp-route-id="@card.Id"
+                               class=" btn btn-sm btn-light position-absolute top-0 start-0 mt-2 ms-2 rounded-circle"
+                               style="color:#fff; ">
+                                <i class="bi bi-trash" style="color:#2596be;"></i>
+                            </a>
+                            <div class="text-between-links text-center">
+                                <p class="front-text">
+
+                                 Front
+                                </p>
+                                <p class="back-text" style="display:none;">
+
+                                    Back
+                                </p>
+                            </div>
+                            <a asp-controller="FlashCard" asp-action="Edit" asp-route-cardId="@card.Id" asp-route-setId="@card.CardSetId"
+                               class="btn btn-sm btn-primary position-absolute top-0 end-0 mt-2 me-2 rounded-circle"
+                               style="color:#2596be;">
+                                <i class="bi bi-pencil-square" style="color:white"></i>
+                            </a>
+                            <div class="card-body card-body-display position-relative mb-2" >
+                                <div class="pl-1 card-text">
+                                    
+                                    <p class=" card-front card-title  h3 text-dark  text-center fw-bolder">@card.Text1</p>
+                                    <p class=" card-back card-title  h3 text-dark  text-center fw-bolder" style="display:none">@card.Text2</p>
+                                </div>
+
+                                
+                            </div>
+                            <div class="text-center ">
+                                <button class="btn btn-primary bg-gradient view-other-side"> Turn </button>
+                            </div> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        } 
+    </div>
+</div>
+@section Scripts{
+    <script>
+        
+        
+    
+        
+        
+        
+        //turn card
+        document.querySelectorAll('.view-other-side').forEach(button => {
+            button.addEventListener('click', function () {
+                const cardBody = this.closest('.card').querySelector('.card-body');
+                const frontorback = this.closest('.card').querySelector('.text-between-links');
+                const front = cardBody.querySelector('.card-front');
+                const back = cardBody.querySelector('.card-back');
+                const fronttext = frontorback.querySelector('.front-text');
+                const backtext = frontorback.querySelector('.back-text');
+
+
+                if (front.style.display !== 'none') {
+                    fronttext.style.display = 'none';
+                    backtext.style.display = 'block';
+                    front.style.display = 'none';
+                    back.style.display = 'block';
+                    this.textContent = 'Turn';
+                } else {
+                    backtext.style.display = 'none';
+                    fronttext.style.display = 'block';
+                    front.style.display = 'block';
+                    back.style.display = 'none';
+                    this.textContent = 'Тurn';
+                }
+            });
+        });
+    </script>
+}
