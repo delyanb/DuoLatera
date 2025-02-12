@@ -59,7 +59,7 @@ html {
 .option{
     width:100%;
     height:40%;
-    margin-top:0.5rem;
+    margin-top:1.5rem;
     margin-bottom:3rem;
 }
 .method-showoff{
@@ -72,6 +72,7 @@ html {
 }
 .button-place{
     height:10%;
+    margin-top:1.5rem;
                   }
 .card-for-animation {
     
