@@ -1,7 +1,5 @@
 ﻿@using DuoLatera.Models.ViewModels
 @model CardSetVM
-@if(Model.IsMine)
-{
 
 <div class="row justify-content-between ">
     <div class="col-auto">
@@ -11,13 +9,6 @@
         <a class="btn btn-secondary bg-gradient text-center" asp-controller="Folder" asp-action="Index"> Back To Folders </a>
     </div>
 </div>
-}
-else{
-    <div class="row justify-content-between ">
-        
-            <a class="btn btn-secondary bg-gradient text-center" asp-controller="Folder" asp-action="Browse"> Back To Folders </a>
-    </div>
-}
 <div class="container-fluid ">
     <div class="row justify-content-center pb-3">
         @foreach(var set in Model.cardSets)
@@ -26,8 +17,6 @@ else{
             <div class="row p-2">
                 <div class="col-12 p-1">
                     <div class="card border-0 p-3 shadow border-top border-5 rounded">
-                            @if(Model.IsMine)
-                            {
                             <a asp-controller="CardSet" asp-action="Delete" asp-route-id="@set.Id"
                                class=" btn btn-sm btn-light position-absolute top-0 start-0 mt-2 ms-2 rounded-circle"
                                style="color:#fff; ">
@@ -38,7 +27,6 @@ else{
                                style="color:#2596be;">
                                 <i class="bi bi-pencil-square" style="color:white"></i>
                             </a>
-                            }
                         <i class="bi bi-grid-3x3-gap text-center" style="font-size: 6rem; color:#2596be;"></i>
                         <div class="card-body pb-0">
                             <div class="pl-1">

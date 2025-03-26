@@ -16,21 +16,11 @@ namespace DuoLatera.Controllers
         }
         public IActionResult Index(int id)
         {
-            bool isMine = false;
-
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            string folderOwnerId = _unitOfWork.Folders.Get(u => u.Id == id).UserId;
-            if (folderOwnerId == userId) isMine = true;
-
             var cardSets = _unitOfWork.Sets.GetAll(s => s.FolderId == id);
             CardSetVM cardSetVM = new CardSetVM
             {
                 cardSets = cardSets,
                 FolderId = id,
-                IsMine = isMine
-
             };
             return View(cardSetVM);
         }

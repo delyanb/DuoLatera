@@ -69,13 +69,5 @@ namespace DuoLatera.Controllers
             return RedirectToAction("Index", "Folder");
         }
         public IActionResult UpdateFolder() { return View(); }
-        public IActionResult Browse()
-        {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var foldersToBrowse = _unitOfWork.Folders.GetAll().Where(f => f.UserId != userId || f.Access == "Public");
-            return View(foldersToBrowse);
-        }
-
     }
 }
