@@ -1,4 +1,5 @@
-﻿using DuoLatera.Models;
+﻿using DuoLatera.Managers;
+using DuoLatera.Models;
 using DuoLatera.Models.ViewModels;
 using DuoLatera.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -10,21 +11,17 @@ namespace DuoLatera.Controllers
     public class FlashCardController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public FlashCardController(IUnitOfWork unitOfWork)
+        private readonly ILoginManager _loginManager;
+        public FlashCardController(IUnitOfWork unitOfWork, ILoginManager loginManager)
         {
+            _loginManager = loginManager;
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index(int setId)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //logic to get fixed
-            int folderId = _unitOfWork.Sets.Get(s => s.Id == setId).FolderId;
-            string folderOwnerId = _unitOfWork.Folders.Get(f => f.Id == folderId).UserId;
-
             bool isMine = false;
 
-            if (folderOwnerId == userId) isMine = true;
+            if(_loginManager.CheckSetOwnership(setId)) isMine = true;
 
             var cards = _unitOfWork.Cards.GetAll(c=>c.CardSetId == setId).ToList();
             string json = JsonConvert.SerializeObject(cards);
@@ -46,6 +43,7 @@ namespace DuoLatera.Controllers
         }
         public IActionResult Create(int setId)
         {
+            if (!_loginManager.CheckSetOwnership(setId)) return RedirectToAction("Home", "Index");
             return View(new FlashCardVM { FlashCard = new FlashCard(),setId=setId});
             
         }
@@ -53,8 +51,8 @@ namespace DuoLatera.Controllers
         [ActionName("Create")]
         public IActionResult CreatePOST(FlashCardVM viewModel)
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var userId = _loginManager.GetLoggedUserId();
             viewModel.FlashCard.UserId= userId;
             viewModel.FlashCard.CreateDate = DateTime.Now;
             viewModel.FlashCard.CardSetId = viewModel.setId;
@@ -66,14 +64,15 @@ namespace DuoLatera.Controllers
         public IActionResult Delete(int id)
         {
             FlashCard card = _unitOfWork.Cards.Get(C => C.Id == id);
+            if (!_loginManager.CheckSetOwnership((int)card.CardSetId)) return RedirectToAction("Home", "Index");
             _unitOfWork.Cards.Remove(card);
             _unitOfWork.Save();
             return RedirectToAction("Index", new { setId = card.CardSetId });
         }
         public IActionResult Edit(int setId,int cardId)
         {
+            if (!_loginManager.CheckSetOwnership(setId)) return RedirectToAction("Home", "Index");
             var card = _unitOfWork.Cards.Get(c => c.Id == cardId);
-
             return View(new FlashCardVM { FlashCard=card,setId=setId});
         }
         [HttpPost]

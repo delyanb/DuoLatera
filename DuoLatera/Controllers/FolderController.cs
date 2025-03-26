@@ -1,4 +1,5 @@
-﻿using DuoLatera.Models;
+﻿using DuoLatera.Managers;
+using DuoLatera.Models;
 using DuoLatera.Models.ViewModels;
 using DuoLatera.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -11,16 +12,17 @@ namespace DuoLatera.Controllers
     public class FolderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public FolderController(IUnitOfWork unitOfWork)
+        private readonly ILoginManager _loginManager;
+        public FolderController(IUnitOfWork unitOfWork, ILoginManager loginManager)
         {
+            _loginManager = loginManager;
             _unitOfWork = unitOfWork;
         }
         [Authorize]
         public IActionResult Index(bool browse)
         {
 
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = _loginManager.GetLoggedUserId();
 
             IEnumerable<Folder> _folderList;
 
@@ -41,13 +43,14 @@ namespace DuoLatera.Controllers
         [Authorize]
         public IActionResult UpSert(int? id)
         {
-            if(id==null)
+            if (id==null)
             {
 
             return View(new FolderVM());
             }
             else
             {
+                if (!_loginManager.CheckFolderOwnership((int)id)) return RedirectToAction("Home", "Index");
                 FolderVM folderVM = new FolderVM();
                 folderVM.Folder = _unitOfWork.Folders.Get(f => f.Id == id);
                 return View(folderVM);
@@ -61,15 +64,13 @@ namespace DuoLatera.Controllers
             if(obj.Folder.Id==0)
             {
                 obj.Folder.CreateDate = DateTime.Now;
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = _loginManager.GetLoggedUserId();
                 obj.Folder.UserId = userId;
                 _unitOfWork.Folders.Add(obj.Folder);
             }
             else
             {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userId = _loginManager.GetLoggedUserId();
                 obj.Folder.UserId = userId;
                 _unitOfWork.Folders.Update(obj.Folder);
             }
@@ -78,6 +79,7 @@ namespace DuoLatera.Controllers
         }
         public IActionResult Delete(int id)
         {
+            if (!_loginManager.CheckFolderOwnership(id)) return RedirectToAction("Home", "Index");
             Folder folder = _unitOfWork.Folders.Get(f => f.Id == id);
             _unitOfWork.Folders.Remove(folder);
             _unitOfWork.Save();

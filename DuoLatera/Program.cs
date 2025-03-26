@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using DuoLatera.Repository.IRepository;
 using DuoLatera.Repository;
+using DuoLatera.Managers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.AddDbContext<ApplicationDbContext>
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ILoginManager, LoginManager>();
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

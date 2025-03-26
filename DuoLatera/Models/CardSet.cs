@@ -21,5 +21,6 @@ namespace DuoLatera.Models
         [ValidateNever]
         public Folder Folder { get; set; }
         public string? ImageUrl { get; set; }
+        public ICollection<FlashCard> FlashCards { get; set; }
     }
 }

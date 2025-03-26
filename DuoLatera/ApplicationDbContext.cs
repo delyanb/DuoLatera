@@ -15,6 +15,17 @@ namespace DuoLatera
         public DbSet<Folder> Folders { get; set; }
         public DbSet<CardSet> CardSets { get; set; }
         public DbSet<FlashCard> FlashCards { get; set; }
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Enable Cascade Delete
+            modelBuilder.Entity<FlashCard>()
+                .HasOne(f => f.CardSet)
+                .WithMany(c => c.FlashCards)
+                .HasForeignKey(f => f.CardSetId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

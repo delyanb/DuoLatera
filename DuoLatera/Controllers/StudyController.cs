@@ -1,4 +1,5 @@
-﻿using DuoLatera.Models;
+﻿using DuoLatera.Managers;
+using DuoLatera.Models;
 using DuoLatera.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -8,8 +9,10 @@ namespace DuoLatera.Controllers
     public class StudyController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public StudyController(IUnitOfWork unitOfWork)
+        private readonly ILoginManager _loginManager;
+        public StudyController(IUnitOfWork unitOfWork, ILoginManager loginManager)
         {
+            _loginManager = loginManager;
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()

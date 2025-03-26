@@ -1,4 +1,6 @@
+using DuoLatera.Managers;
 using DuoLatera.Models;
+using DuoLatera.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,11 +8,12 @@ namespace DuoLatera.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILoginManager _loginManager;
+        public HomeController(IUnitOfWork unitOfWork, ILoginManager loginManager)
         {
-            _logger = logger;
+            _loginManager = loginManager;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()

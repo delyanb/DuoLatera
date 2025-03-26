@@ -33,6 +33,8 @@ else
                 <div class="row p-2">
                     <div class="col-12 p-1">
                         <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                            @if(Model.IsMine)
+                            {
                              <a asp-controller="FlashCard" asp-action="Delete" asp-route-id="@card.Id"
                                class=" btn btn-sm btn-light position-absolute top-0 start-0 mt-2 ms-2 rounded-circle"
                                style="color:#fff; ">
@@ -53,6 +55,21 @@ else
                                style="color:#2596be;">
                                 <i class="bi bi-pencil-square" style="color:white"></i>
                             </a>
+
+                            }
+                            else
+                            {
+                                <div class="text-between-links text-center">
+                                    <p class="front-text">
+
+                                        Front
+                                    </p>
+                                    <p class="back-text" style="display:none;">
+
+                                        Back
+                                    </p>
+                                </div>
+                            }
                             <div class="card-body card-body-display position-relative mb-2" >
                                 <div class="pl-1 card-text">
                                     

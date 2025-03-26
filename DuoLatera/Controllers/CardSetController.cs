@@ -1,4 +1,5 @@
-﻿using DuoLatera.Models;
+﻿using DuoLatera.Managers;
+using DuoLatera.Models;
 using DuoLatera.Models.ViewModels;
 using DuoLatera.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -10,19 +11,17 @@ namespace DuoLatera.Controllers
     public class CardSetController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CardSetController(IUnitOfWork unitOfWork)
+        private readonly ILoginManager _loginManager;
+        public CardSetController(IUnitOfWork unitOfWork, ILoginManager loginManager)
         {
+            _loginManager = loginManager;
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index(int id)
         {
             bool isMine = false;
 
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            string folderOwnerId = _unitOfWork.Folders.Get(u => u.Id == id).UserId;
-            if (folderOwnerId == userId) isMine = true;
+            if (_loginManager.CheckFolderOwnership(id)) isMine = true;
 
             var cardSets = _unitOfWork.Sets.GetAll(s => s.FolderId == id);
             CardSetVM cardSetVM = new CardSetVM
