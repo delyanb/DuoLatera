@@ -21,10 +21,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav me-auto">
                         <li class=" nav-item me-auto">
-                            <a asp-controller="Folder" asp-action="Index" class="nav-link">My Folders </a>
+                            <a asp-controller="Folder" asp-action="Index" asp-route-browse="false" class="nav-link">My Folders </a>
                         </li>
                         <li class=" nav-item me-auto">
-                            <a asp-controller="Folder" asp-action="Browse" class="nav-link">Browse</a>
+                            <a asp-controller="Folder" asp-action="Index" asp-route-browse="true" class="nav-link">Browse</a>
                         </li>
                         
                     </ul>

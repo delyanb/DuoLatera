@@ -16,12 +16,27 @@ namespace DuoLatera.Controllers
             _unitOfWork = unitOfWork;
         }
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(bool browse)
         {
+
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<Folder> _folderList = _unitOfWork.Folders.GetAll(f => f.UserId == userId).ToList();
-            return View(_folderList);
+
+            IEnumerable<Folder> _folderList;
+
+            if(!browse)
+            _folderList = _unitOfWork.Folders.GetAll(f => f.UserId == userId).ToList();
+            else
+            _folderList = _unitOfWork.Folders.GetAll(f => f.UserId != userId).Where(f => f.Access == "Public");
+
+            var foldersVM = new FoldersVM()
+            {
+                folders = _folderList,
+                browse = browse
+            };
+
+            return View(foldersVM);
+
         }
         [Authorize]
         public IActionResult UpSert(int? id)
@@ -69,13 +84,5 @@ namespace DuoLatera.Controllers
             return RedirectToAction("Index", "Folder");
         }
         public IActionResult UpdateFolder() { return View(); }
-        public IActionResult Browse()
-        {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var foldersToBrowse = _unitOfWork.Folders.GetAll().Where(f => f.UserId != userId || f.Access == "Public");
-            return View(foldersToBrowse);
-        }
-
     }
 }

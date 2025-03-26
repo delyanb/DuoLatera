@@ -1,5 +1,7 @@
 ﻿@using DuoLatera.Models.ViewModels
 @model FlashCardsVM
+@if(Model.IsMine)
+{
 <div class="row justify-content-between ">
     <div class="col-auto">
         <a class="btn btn-primary bg-gradient text-center" asp-controller="FlashCard" asp-action="Create" asp-route-setId="@Model.CardSet.Id"> Add FlashCard</a>
@@ -11,6 +13,18 @@
         <a class="btn btn-secondary bg-gradient text-center" asp-controller="CardSet" asp-action="Index" asp-route-id ="@Model.CardSet.FolderId"> Back To Sets </a>
     </div>
 </div>
+}
+else
+{
+    <div class="row justify-content-between ">
+        <div class="col-auto ">
+            <a class="btn btn-success bg-gradient text-center" asp-controller="FlashCard" asp-action="SelectStudyMethod" asp-route-setId="@Model.CardSet.Id"> Study Set </a>
+        </div>
+        <div class="col-auto">
+            <a class="btn btn-secondary bg-gradient text-center" asp-controller="CardSet" asp-action="Index" asp-route-id="@Model.CardSet.FolderId"> Back To Sets </a>
+        </div>
+    </div>
+}
 <div class="container-fluid pt-4">
     <div class="row justify-content-center pb-3 cardrow">
          @foreach (var card in Model.FlashCards)

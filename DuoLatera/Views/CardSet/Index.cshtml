@@ -8,14 +8,14 @@
         <a class="btn btn-primary bg-gradient text-center" asp-controller="CardSet" asp-action="UpSert" asp-route-folderId="@Model.FolderId"> Create New CardSet </a>
     </div>
     <div class="col-auto">
-        <a class="btn btn-secondary bg-gradient text-center" asp-controller="Folder" asp-action="Index"> Back To Folders </a>
+            <a class="btn btn-secondary bg-gradient text-center" asp-controller="Folder" asp-action="Index" asp-route-browse="false"> Back To Folders </a>
     </div>
 </div>
 }
 else{
     <div class="row justify-content-between ">
         
-            <a class="btn btn-secondary bg-gradient text-center" asp-controller="Folder" asp-action="Browse"> Back To Folders </a>
+            <a class="btn btn-secondary bg-gradient text-center" asp-controller="Folder" asp-action="Index" asp-route-browse="true"> Back To Folders </a>
     </div>
 }
 <div class="container-fluid ">

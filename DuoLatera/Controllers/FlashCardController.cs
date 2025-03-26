@@ -16,11 +16,22 @@ namespace DuoLatera.Controllers
         }
         public IActionResult Index(int setId)
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //logic to get fixed
+            int folderId = _unitOfWork.Sets.Get(s => s.Id == setId).FolderId;
+            string folderOwnerId = _unitOfWork.Folders.Get(f => f.Id == folderId).UserId;
+
+            bool isMine = false;
+
+            if (folderOwnerId == userId) isMine = true;
+
             var cards = _unitOfWork.Cards.GetAll(c=>c.CardSetId == setId).ToList();
             string json = JsonConvert.SerializeObject(cards);
             var cardVM = new FlashCardsVM { FlashCards = cards, 
                 CardSet= _unitOfWork.Sets.Get(s=>s.Id == setId),
-                CardData = json };
+                CardData = json,
+                IsMine = isMine};
             return View(cardVM);
         }
         public IActionResult SelectStudyMethod(int setId)
