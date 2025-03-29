@@ -4,7 +4,9 @@ using DuoLatera.Models.ViewModels;
 using DuoLatera.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static NuGet.Packaging.PackagingConstants;
 
 namespace DuoLatera.Controllers
@@ -19,25 +21,30 @@ namespace DuoLatera.Controllers
             _unitOfWork = unitOfWork;
         }
         [Authorize]
-        public IActionResult Index(bool browse)
+        public IActionResult Index(bool allfolders, bool? myfolders, string searchQuery)
         {
+            if (!myfolders.HasValue)
+            {
+                myfolders = true;
+            }
 
             var userId = _loginManager.GetLoggedUserId();
 
-            IEnumerable<Folder> _folderList;
+            var filter = new FolderFilter.Builder()
+                .ForUser(userId)
+                .WithFolders(_unitOfWork.Folders.GetAll()) // Get folders from the database
+                .ShowMyFolders((bool)myfolders)
+                .ShowPublicFolders(allfolders)
+                .EnableSearch(searchQuery)
+                .Build();
 
-            if(!browse)
-            _folderList = _unitOfWork.Folders.GetAll(f => f.UserId == userId).ToList();
-            else
-            _folderList = _unitOfWork.Folders.GetAll(f => f.UserId != userId).Where(f => f.Access == "Public");
-
-            var foldersVM = new FoldersVM()
+            var folderVM = new FoldersVM()
             {
-                folders = _folderList,
-                browse = browse
+                folders = filter.filteredFolders,
+                userId = userId
             };
 
-            return View(foldersVM);
+            return View(folderVM);
 
         }
         [Authorize]

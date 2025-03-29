@@ -3,6 +3,6 @@
     public class FoldersVM
     {
         public IEnumerable<Folder> folders { get; set; }
-        public bool browse { get; set; }
+        public string userId { get; set; }
     }
 }
