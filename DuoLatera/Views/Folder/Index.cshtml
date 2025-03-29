@@ -4,15 +4,22 @@
 <div class="row justify-content-center mb-3">
     <div class="col-md-6 col-10">
         <div class="input-group">
-                <input type="text" id="folderSearch" class="form-control" placeholder="Search folders...">
-            <a asp-controller ="Folder" asp-action="Index" 
-                class="btn btn-primary">
+            <!-- Search Input -->
+            <input type="text" id="folderSearch" class="form-control" placeholder="Search folders...">
+
+            <!-- Folder Filter Dropdown -->
+            <select id="folderFilter" name="allfolders" class="form-select">
+                <option value="true">Public Folders</option>
+                <option value="false">My Folders</option>
+            </select>
+
+            <!-- Search Button (Modified with JavaScript) -->
+            <a id="searchBtn" asp-controller="Folder" asp-action="Index" class="btn btn-primary">
                 <i class="bi bi-search"></i>
             </a>
         </div>
     </div>
 </div>
-       
 <div class="container-fluid">
     <div class="row justify-content-center pb-3">
         @foreach(var folder in Model.folders)
@@ -53,3 +60,20 @@
         }
     </div>
 </div>
+
+<script>
+    document.getElementById("searchBtn").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+
+        // Get values from input and select
+        var searchQuery = document.getElementById("folderSearch").value;
+        var allfolders = document.getElementById("folderFilter").value;
+        var myfolders = (allfolders === "true") ? "false" : "true";
+
+        // Construct the URL with query parameters
+        var url = `/Folder/Index?searchQuery=${encodeURIComponent(searchQuery)}&allfolders=${allfolders}&myfolders=${myfolders}`;
+
+        // Redirect the user
+        window.location.href = url;
+    });
+</script>
